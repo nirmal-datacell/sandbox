@@ -1,329 +1,278 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sandbox</title>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<style>
-  :root { --bg:#f4f6f8; --card:#fff; --ink:#1d2733; --muted:#66727f; --line:#e1e6eb; --brand:#0b5394; --ok:#1e7d3a; --warn:#b25b00; --err:#b3261e; }
-  * { box-sizing:border-box; }
-  body { margin:0; font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); }
-  header { background:var(--brand); color:#fff; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; gap:8px; position:sticky; top:0; z-index:2; }
-  header #appName { font-weight:600; font-size:17px; }
-  header .who { font-size:13px; text-align:right; }
-  main { max-width:820px; margin:0 auto; padding:14px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:14px; }
-  .center { text-align:center; }
-  .muted { color:var(--muted); }
-  .err { color:var(--err); }
-  .okmsg { color:var(--ok); }
-  .row { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
-  .badge { background:#e8f0fe; color:var(--brand); border-radius:99px; padding:3px 10px; font-size:13px; font-weight:600; }
-  .tabs { display:flex; gap:6px; margin-bottom:12px; }
-  .tabs button { flex:1; padding:10px; border:1px solid var(--line); background:#fff; border-radius:10px; font-weight:600; color:var(--muted); }
-  .tabs button.active { background:var(--brand); color:#fff; border-color:var(--brand); }
-  label { display:block; margin:14px 0 0; }
-  label span { display:block; font-weight:600; margin-bottom:5px; }
-  label small { display:block; color:var(--muted); margin-top:3px; }
-  input, select, textarea { width:100%; padding:11px 12px; border:1px solid #c9d1d9; border-radius:9px; font:inherit; background:#fff; }
-  input:focus, select:focus, textarea:focus { outline:2px solid #9cc3ec; border-color:var(--brand); }
-  button { font:inherit; cursor:pointer; }
-  .primary { width:100%; margin-top:18px; padding:13px; border:0; border-radius:10px; background:var(--brand); color:#fff; font-weight:600; font-size:16px; }
-  .primary:disabled { opacity:.6; }
-  .ghost { padding:8px 12px; border:1px solid var(--line); border-radius:9px; background:#fff; }
-  .link { background:none; border:0; color:#fff; text-decoration:underline; padding:0; font-size:13px; }
-  .tablewrap { overflow-x:auto; }
-  table { border-collapse:collapse; width:100%; font-size:14px; }
-  th, td { padding:8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; vertical-align:top; }
-  th { background:#f7f9fb; font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); }
-  .pill { font-size:12px; font-weight:600; padding:2px 8px; border-radius:99px; }
-  .pill.Reported { background:#e6f4ea; color:var(--ok); }
-  .pill.Pending { background:#fdf0e1; color:var(--warn); }
-  .stats { display:flex; gap:10px; margin:12px 0; }
-  .stat { flex:1; background:#f7f9fb; border-radius:10px; padding:10px; text-align:center; }
-  .stat b { display:block; font-size:22px; }
-  #gbtn { display:inline-block; margin:10px 0; }
-</style>
-</head>
-<body>
-<header>
-  <div id="appName">Data Collection</div>
-  <div class="who" id="who" hidden><div id="whoName"></div><button class="link" id="signoutBtn">Sign out</button></div>
-</header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Users</title>
+    <style>
+      :root {
+        --accent: #f6821f;
+        --border: #ddd;
+        --muted: #666;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #fafafa;
+        color: #222;
+      }
+      main {
+        max-width: 640px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      h1 {
+        margin: 0 0 4px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      form {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      input {
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font: inherit;
+      }
+      input[name="username"] {
+        flex: 2 1 160px;
+      }
+      input[name="age"] {
+        flex: 1 1 80px;
+      }
+      button {
+        padding: 8px 14px;
+        border: 0;
+        border-radius: 6px;
+        font: inherit;
+        cursor: pointer;
+        background: var(--accent);
+        color: #fff;
+      }
+      button.secondary {
+        background: #e5e5e5;
+        color: #222;
+      }
+      button.danger {
+        background: #d9534f;
+      }
+      #message {
+        min-height: 1.4em;
+        margin: 0 0 16px;
+        color: #c0392b;
+      }
+      #message.ok {
+        color: #2e7d32;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+      th {
+        background: #f3f3f3;
+        font-weight: 600;
+      }
+      td.actions {
+        text-align: right;
+        white-space: nowrap;
+      }
+      td.actions button {
+        padding: 4px 10px;
+        margin-left: 4px;
+      }
+      .empty {
+        text-align: center;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Users</h1>
+      <p class="sub">GitHub Pages → Cloudflare Worker → D1</p>
 
-<main>
-  <section id="view-loading" class="center muted" style="padding:40px 0">Loading…</section>
+      <form id="user-form">
+        <input name="username" placeholder="Username" required maxlength="50" />
+        <input
+          name="age"
+          type="number"
+          placeholder="Age"
+          required
+          min="0"
+          max="150"
+        />
+        <button type="submit" id="submit-btn">Add user</button>
+        <button type="button" id="cancel-btn" class="secondary" hidden>
+          Cancel
+        </button>
+      </form>
+      <p id="message"></p>
 
-  <section id="view-login" hidden>
-    <div class="card center">
-      <h2>Sign in</h2>
-      <p class="muted">Use the Google account registered with the District office.</p>
-      <div id="gbtn"></div>
-      <p id="loginMsg" class="err"></p>
-    </div>
-  </section>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Age</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <tr>
+            <td colspan="4" class="empty">Loading…</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
 
-  <section id="view-app" hidden>
-    <nav class="tabs">
-      <button data-tab="submit" class="active">Submit</button>
-      <button data-tab="history">History</button>
-      <button data-tab="admin" id="adminTabBtn" hidden>Overview</button>
-    </nav>
+    <script>
+      // Your Worker's URL. Local testing uses wrangler dev; replace the second
+      // value with the URL that `npx wrangler deploy` prints.
+      const API_BASE = ["localhost", "127.0.0.1"].includes(location.hostname)
+        ? "http://localhost:8787"
+        : "https://users-api.nirmal-datacell.workers.dev";
 
-    <div class="tab" id="tab-submit">
-      <div class="card">
-        <div class="row"><b id="unitName"></b><span class="badge" id="periodBadge"></span></div>
-        <p id="submitState" class="muted"></p>
-        <form id="form" novalidate>
-          <div id="fields"></div>
-          <button class="primary" id="saveBtn" type="submit">Submit</button>
-        </form>
-        <p id="formMsg"></p>
-      </div>
-    </div>
+      const form = document.getElementById("user-form");
+      const rows = document.getElementById("rows");
+      const message = document.getElementById("message");
+      const submitBtn = document.getElementById("submit-btn");
+      const cancelBtn = document.getElementById("cancel-btn");
+      let editingId = null;
 
-    <div class="tab" id="tab-history" hidden>
-      <div class="card"><div class="tablewrap" id="historyTable"></div></div>
-    </div>
+      async function api(path, options = {}) {
+        const res = await fetch(API_BASE + path, {
+          headers: { "Content-Type": "application/json" },
+          ...options,
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok)
+          throw new Error(data.error || `Request failed (${res.status})`);
+        return data;
+      }
 
-    <div class="tab" id="tab-admin" hidden>
-      <div class="card">
-        <div class="row">
-          <select id="periodSel" style="max-width:200px"></select>
-          <button class="ghost" id="csvBtn">Download CSV</button>
-        </div>
-        <div class="stats" id="stats"></div>
-        <div class="tablewrap" id="adminTable"></div>
-      </div>
-    </div>
-  </section>
-</main>
+      function showMessage(text, ok = false) {
+        message.textContent = text;
+        message.className = ok ? "ok" : "";
+      }
 
-<script>
-/* ======================= CONFIG – fill these two in ======================= */
-const CONFIG = {
-  API_URL:   'https://script.google.com/macros/s/AKfycbxP_BVaDR8qIlH9prfWk2abLP0HtrUgFAX3pZHlurEvqUtwVqBRRPYFCrOiWEMzq6EC/exec',
-  CLIENT_ID: '597359410199-7bei7lcl8eehrk3n752rlhc17hc46cgq.apps.googleusercontent.com',
-};
-/* ========================================================================== */
+      // READ
+      async function loadUsers() {
+        try {
+          const users = await api("/api/users");
+          rows.replaceChildren();
+          if (users.length === 0) {
+            rows.innerHTML =
+              '<tr><td colspan="4" class="empty">No users yet</td></tr>';
+            return;
+          }
+          for (const u of users) {
+            const tr = document.createElement("tr");
+            for (const value of [u.id, u.username, u.age]) {
+              const td = document.createElement("td");
+              td.textContent = value; // textContent keeps user input from being run as HTML
+              tr.append(td);
+            }
+            const actions = document.createElement("td");
+            actions.className = "actions";
+            const edit = Object.assign(document.createElement("button"), {
+              textContent: "Edit",
+              className: "secondary",
+            });
+            const del = Object.assign(document.createElement("button"), {
+              textContent: "Delete",
+              className: "danger",
+            });
+            edit.onclick = () => startEdit(u);
+            del.onclick = () => deleteUser(u);
+            actions.append(edit, del);
+            tr.append(actions);
+            rows.append(tr);
+          }
+        } catch (err) {
+          rows.innerHTML =
+            '<tr><td colspan="4" class="empty">Could not load users</td></tr>';
+          showMessage(err.message);
+        }
+      }
 
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-const isNum = v => v !== '' && v != null && isFinite(Number(v));
-let token = sessionStorage.getItem('idt');
-let ME = null;
-
-function jwtPayload(t) {
-  try { return JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); } catch (e) { return null; }
-}
-function tokenValid(t) {
-  const p = t && jwtPayload(t);
-  return !!(p && p.exp * 1000 > Date.now() + 60000);
-}
-
-function show(view) {
-  ['loading', 'login', 'app'].forEach(v => { $('view-' + v).hidden = v !== view; });
-  $('who').hidden = view !== 'app';
-}
-
-/* ------------------------------ Sign-in ------------------------------ */
-window.addEventListener('load', () => {
-  if (!window.google || !google.accounts) {
-    show('login');
-    $('loginMsg').textContent = 'Could not load Google Sign-In. Check your internet connection or disable content blockers.';
-    return;
-  }
-  google.accounts.id.initialize({
-    client_id: CONFIG.CLIENT_ID,
-    callback: r => { token = r.credential; sessionStorage.setItem('idt', token); boot(); },
-    auto_select: true,
-    use_fedcm_for_prompt: true,
-  });
-  if (tokenValid(token)) boot(); else showLogin();
-});
-
-function showLogin(msg) {
-  show('login');
-  $('loginMsg').textContent = msg || '';
-  $('gbtn').innerHTML = '';
-  google.accounts.id.renderButton($('gbtn'), { theme: 'filled_blue', size: 'large', shape: 'pill', text: 'signin_with' });
-  google.accounts.id.prompt();
-}
-
-function signOut(msg) {
-  token = null; ME = null;
-  sessionStorage.removeItem('idt');
-  if (window.google && google.accounts) google.accounts.id.disableAutoSelect();
-  showLogin(msg);
-}
-$('signoutBtn').onclick = () => signOut();
-
-/* ------------------------------ API ------------------------------ */
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-/* Calls the backend. Busy/network failures are retried automatically with growing,
-   randomised waits so a crowd of users spreads out. Retrying is safe: a submission
-   always updates the same unit+period row, so it can never create duplicates. */
-async function api(action, payload = {}, onRetry) {
-  if (!tokenValid(token)) { signOut('Your session has expired. Please sign in again.'); throw new Error('expired'); }
-  const MAX = 6;
-  for (let attempt = 1; ; attempt++) {
-    let j;
-    try {
-      const res = await fetch(CONFIG.API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS pre-flight
-        body: JSON.stringify({ action, idToken: token, payload }),
+      // CREATE / UPDATE
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const body = JSON.stringify({
+          username: form.username.value,
+          age: Number(form.age.value),
+        });
+        try {
+          if (editingId === null) {
+            await api("/api/users", { method: "POST", body });
+            showMessage("User added", true);
+          } else {
+            await api(`/api/users/${editingId}`, { method: "PUT", body });
+            showMessage("User updated", true);
+          }
+          resetForm();
+          loadUsers();
+        } catch (err) {
+          showMessage(err.message);
+        }
       });
-      j = await res.json(); // Google's "too many requests" page is not JSON → treated as BUSY
-    } catch (e) {
-      j = { ok: false, code: 'BUSY', error: 'Network or server busy.' };
-    }
-    if (j.ok) return j.data;
-    if (j.code === 'AUTH' || j.code === 'DENIED') signOut(j.error);
-    const retryable = j.code === 'BUSY' || j.code === 'SERVER';
-    if (!retryable || attempt >= MAX) {
-      const e = new Error(retryable ? 'Server is busy. Your entries are still on screen — please tap Submit again in a minute.' : j.error);
-      e.code = j.code; throw e;
-    }
-    if (onRetry) onRetry(attempt);
-    await sleep(Math.min(20000, 1500 * 2 ** (attempt - 1)) * (0.5 + Math.random()));
-  }
-}
 
-async function boot() {
-  show('loading');
-  try {
-    ME = await api('whoami');
-    renderApp();
-  } catch (e) {
-    if ($('view-login').hidden) showLogin(e.message === 'Failed to fetch' ? 'Network error. Please retry.' : e.message);
-  }
-}
+      function startEdit(user) {
+        editingId = user.id;
+        form.username.value = user.username;
+        form.age.value = user.age;
+        submitBtn.textContent = "Save changes";
+        cancelBtn.hidden = false;
+        form.username.focus();
+      }
 
-/* ------------------------------ UI ------------------------------ */
-function renderApp() {
-  document.title = ME.appName;
-  $('appName').textContent = ME.appName;
-  $('whoName').textContent = ME.user.name + (ME.user.role === 'admin' ? ' (Admin)' : '');
-  $('unitName').textContent = ME.user.unit === ME.user.email ? ME.user.email : (ME.user.unit || 'No unit assigned');
-  $('periodBadge').textContent = ME.period;
-  $('adminTabBtn').hidden = ME.user.role !== 'admin';
-  $('submitState').textContent = ME.current
-    ? `Already submitted for ${ME.period} (last updated ${ME.current.updatedAt} by ${ME.current.by}). You can edit and re-submit.`
-    : `Not yet submitted for ${ME.period}.`;
-  $('saveBtn').textContent = ME.current ? 'Update' : 'Submit';
-  $('formMsg').textContent = '';
-  buildForm(ME.fields, ME.current ? ME.current.values : {});
-  show('app');
-}
+      function resetForm() {
+        editingId = null;
+        form.reset();
+        submitBtn.textContent = "Add user";
+        cancelBtn.hidden = true;
+      }
+      cancelBtn.onclick = () => {
+        resetForm();
+        showMessage("");
+      };
 
-function buildForm(fields, values) {
-  $('fields').innerHTML = fields.map(f => {
-    const g = jwtPayload(token) || {};
-    const name = esc(f.key), v = values[f.key] || (f.key === 'name' ? (g.name || '') : ''), req = f.required ? 'required' : '';
-    let input;
-    if (f.type === 'select') {
-      input = `<select name="${name}" ${req}><option value="">— Select —</option>` +
-        f.options.map(o => `<option value="${esc(o)}" ${o === String(v) ? 'selected' : ''}>${esc(o)}</option>`).join('') + `</select>`;
-    } else if (f.type === 'textarea') {
-      input = `<textarea name="${name}" rows="3" ${req}>${esc(v)}</textarea>`;
-    } else {
-      const type = f.type === 'number' ? 'number' : f.type === 'date' ? 'date' : 'text';
-      const extra = f.type === 'number'
-        ? `inputmode="decimal" step="any" ${isNum(f.min) ? `min="${esc(f.min)}"` : ''} ${isNum(f.max) ? `max="${esc(f.max)}"` : ''}`
-        : '';
-      input = `<input type="${type}" name="${name}" value="${esc(String(v).replace(/,/g, f.type === 'number' ? '' : ','))}" ${extra} ${req}>`;
-    }
-    return `<label><span>${esc(f.label)}${f.required ? ' *' : ''}</span>${input}${f.help ? `<small>${esc(f.help)}</small>` : ''}</label>`;
-  }).join('');
-}
+      // DELETE
+      async function deleteUser(user) {
+        if (!confirm(`Delete ${user.username}?`)) return;
+        try {
+          await api(`/api/users/${user.id}`, { method: "DELETE" });
+          if (editingId === user.id) resetForm();
+          showMessage("User deleted", true);
+          loadUsers();
+        } catch (err) {
+          showMessage(err.message);
+        }
+      }
 
-$('form').addEventListener('submit', async ev => {
-  ev.preventDefault();
-  const form = $('form');
-  if (!form.reportValidity()) return;
-  const values = Object.fromEntries(new FormData(form).entries());
-  const btn = $('saveBtn');
-  btn.disabled = true; $('formMsg').className = ''; $('formMsg').textContent = 'Saving…';
-  try {
-    const r = await api('submit', { values }, n => { $('formMsg').textContent = `Server busy, retrying (${n})… please keep this page open.`; });
-    ME = await api('whoami');
-    renderApp();
-    $('formMsg').className = 'okmsg';
-    $('formMsg').textContent = r.updated ? `Updated for ${r.period}.` : `Submitted for ${r.period}. Thank you!`;
-  } catch (e) {
-    $('formMsg').className = 'err';
-    $('formMsg').textContent = e.message === 'Failed to fetch' ? 'Network error. Please retry.' : e.message;
-  } finally {
-    btn.disabled = false;
-  }
-});
-
-/* Tabs */
-document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
-  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('active', x === b));
-  document.querySelectorAll('.tab').forEach(t => { t.hidden = t.id !== 'tab-' + b.dataset.tab; });
-  if (b.dataset.tab === 'history') loadHistory();
-  if (b.dataset.tab === 'admin') loadOverview();
-});
-
-function table(headers, rows) {
-  if (!rows.length) return '<p class="muted">No records yet.</p>';
-  return `<table><thead><tr>${headers.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>` +
-    rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('') + `</tbody></table>`;
-}
-
-async function loadHistory() {
-  $('historyTable').innerHTML = '<p class="muted">Loading…</p>';
-  try {
-    const d = await api('myRecords');
-    $('historyTable').innerHTML = table(
-      ['Period', ...d.fields.map(f => f.label), 'Updated'],
-      d.rows.map(r => [esc(r.period), ...d.fields.map(f => esc(r.values[f.key])), esc(r.updatedAt)])
-    );
-  } catch (e) { $('historyTable').innerHTML = `<p class="err">${esc(e.message)}</p>`; }
-}
-
-async function loadOverview(period) {
-  $('adminTable').innerHTML = '<p class="muted">Loading…</p>';
-  try {
-    const d = await api('overview', { period: period || $('periodSel').value || '' });
-    $('periodSel').innerHTML = d.periods.map(p => `<option ${p === d.period ? 'selected' : ''}>${esc(p)}</option>`).join('');
-    const done = d.units.filter(u => u.status === 'Reported').length;
-    $('stats').innerHTML =
-      `<div class="stat"><b>${d.units.length}</b>Units</div>` +
-      `<div class="stat"><b style="color:var(--ok)">${done}</b>Reported</div>` +
-      `<div class="stat"><b style="color:var(--warn)">${d.units.length - done}</b>Pending</div>`;
-    const units = d.units.slice().sort((a, b) => (a.status === b.status ? 0 : a.status === 'Pending' ? -1 : 1));
-    $('adminTable').innerHTML = table(
-      ['Unit', 'Status', ...d.fields.map(f => f.label), 'By', 'Updated'],
-      units.map(u => [
-        esc(u.unit),
-        `<span class="pill ${esc(u.status)}">${esc(u.status)}</span>`,
-        ...d.fields.map(f => esc(u.values ? u.values[f.key] : '')),
-        esc(u.by || (u.people || []).join(', ')),
-        esc(u.updatedAt || ''),
-      ])
-    );
-  } catch (e) { $('adminTable').innerHTML = `<p class="err">${esc(e.message)}</p>`; }
-}
-$('periodSel').onchange = () => loadOverview($('periodSel').value);
-
-$('csvBtn').onclick = async () => {
-  const period = $('periodSel').value;
-  try {
-    const d = await api('allRecords', { period });
-    const q = v => `"${String(v).replace(/"/g, '""')}"`;
-    const csv = [d.header, ...d.rows].map(r => r.map(q).join(',')).join('\r\n');
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' }));
-    a.download = `data_${period || 'all'}.csv`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  } catch (e) { alert(e.message); }
-};
-</script>
-</body>
+      loadUsers();
+    </script>
+  </body>
 </html>
